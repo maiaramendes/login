@@ -14,7 +14,7 @@ import static com.login.utils.ReaderUtils.read;
 @Service
 public class UserService {
 
-    private final static String PATH = "/home/maiara/login/src/main/resources/users/users.json";
+    private final static String PATH = "/users/users.json";
 
     public User find(final String userName) throws UserNotFoundException {
         return getAll().stream().filter(t -> t.getUserName().equalsIgnoreCase(userName)).findFirst()
