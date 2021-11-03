@@ -1,32 +1,23 @@
 package com.login.utils;
 
-import com.google.gson.Gson;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.login.user.model.User;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class ReaderUtils {
 
-    public static JSONArray read(final String filePath) throws IOException {
-        final JSONParser jsonParser = new JSONParser();
-        try (final FileReader reader = new FileReader(filePath)) {
-            final Object object = jsonParser.parse(reader);
-            return (JSONArray) object;
-        } catch (FileNotFoundException | ParseException e) {
+    public static ArrayList<User> read(final String filePath) throws IOException {
+        try (final InputStream reader = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream(filePath)) {
+            return new ObjectMapper().readValue(reader, new TypeReference<>() {});
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return new JSONArray();
-    }
-
-    public static ArrayList<?> convertToObject(final JSONArray jsonArray, final Class<?> type) {
-        final ArrayList<?> list = new ArrayList<>();
-        jsonArray.stream().forEach(array -> list.add(new Gson().fromJson(array.toString(), (Type) type)));
-        return list;
+        return new ArrayList<>();
     }
 }

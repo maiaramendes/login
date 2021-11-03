@@ -30,6 +30,7 @@ public class UserServiceTest {
         final User expected = expectedUser();
         final User user = userService.find("maiaramendes");
         assertEquals(expected, user);
+        assertEquals("Maiara", user.getName());
     }
 
     @Test
